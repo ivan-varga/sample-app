@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="PlaceholderEditText">
+        <attr name="characterNumber" format="integer" />
+        <attr name="cursorWidth" format="dimension" />
+        <attr name="cursorColor" format="color" />
+        <attr name="placeholderColor" format="color" />
+    </declare-styleable>
+</resources>

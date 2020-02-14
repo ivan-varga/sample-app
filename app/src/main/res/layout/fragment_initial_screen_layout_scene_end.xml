@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rootEnd"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.example.mintmobiledemoapp.AnimatedBorderEditTextView
+        android:id="@+id/animatedBorderEditTextView"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_gravity="top"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/edit_text_container_rounded_background"
+        android:stateListAnimator="@animator/raise_on_touch_anim"
+        app:layout_constraintBottom_toTopOf="@id/initialScreenFragmentImage"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.example.sample.AnimatedBorderView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:backgroundAnimationDuration="300"
+            app:backgroundColorFocused="@android:color/white"
+            app:backgroundColorUnfocused="@android:color/white"
+            app:borderAnimationDuration="300"
+            app:borderColorCorrect="@android:color/holo_green_dark"
+            app:borderColorDefault="#ECECEC"
+            app:borderColorError="#FF0F00"
+            app:borderRadius="@dimen/edit_text_border_radius"
+            app:borderStrokeWidth="1.5dp" />
+
+        <com.example.sample.PlaceholderEditText
+            android:id="@+id/placeholderEditText"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_margin="10dp"
+            android:layout_marginStart="12dp"
+            android:layout_gravity="center"
+            android:layout_marginEnd="12dp"
+            android:textSelectHandle="@android:color/transparent"
+            android:background="@android:color/transparent"
+            android:textColor="@android:color/black"
+            app:cursorColor="@android:color/transparent"/>
+    </com.example.mintmobiledemoapp.AnimatedBorderEditTextView>
+
+    <ImageView
+        android:id="@+id/initialScreenFragmentImage"
+        android:layout_width="match_parent"
+        android:layout_height="280dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="32dp"
+        android:background="@android:color/transparent"
+        android:clickable="true"
+        android:focusable="true"
+        android:src="@drawable/ic_launcher_foreground"
+        android:stateListAnimator="@animator/raise_on_touch_anim"
+        app:layout_constraintBottom_toTopOf="@id/initialScreenFragmentTitleTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/animatedBorderEditTextView" />
+
+    <TextView
+        android:id="@+id/initialScreenFragmentTitleTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:fontFamily="@font/oswald_bold"
+        android:gravity="center_horizontal|top"
+
+        android:stateListAnimator="@animator/raise_on_touch_anim"
+        android:text="Let's get you started"
+        android:textAllCaps="true"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        android:textColor="#F9F9F9"
+        android:textSize="26sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/initialScreenFragmentImage" />
+
+    <TextView
+        android:id="@+id/initialScreenFragmentSubtitleTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginEnd="28dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="There\'s going to be some wild savings on this ride. We offer awesome wireless service at the lowest monthly price."
+        android:textAlignment="center"
+        android:textColor="#F9F9F9"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/transitionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Start"
+        android:textSize="30sp"
+        app:layout_constraintBottom_toTopOf="@+id/initialScreenFragmentSubtitleTextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/initialScreenFragmentTitleTextView" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

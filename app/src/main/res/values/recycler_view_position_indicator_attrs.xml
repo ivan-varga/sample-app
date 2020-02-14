@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="RecyclerViewPositionIndicator">
+        <attr name="indicatorDrawable" format="reference" />
+        <attr name="indicatorOffsetStart" format="dimension" />
+        <attr name="indicatorOffsetEnd" format="dimension" />
+    </declare-styleable>
+</resources>

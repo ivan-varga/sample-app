@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CustomGaugeView">
+        <attr name="strokeWidth" format="dimension" />
+        <attr name="startDefaultColor" format="color" />
+        <attr name="endDefaultColor" format="color" />
+        <attr name="arcBackgroundColor" format="color" />
+        <attr name="arcBackgroundOpacity" format="float" />
+    </declare-styleable>
+</resources>

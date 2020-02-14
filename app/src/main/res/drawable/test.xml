@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animated-vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt">
+    <aapt:attr name="android:drawable">
+        <vector
+            android:width="64dp"
+            android:height="64dp"
+            android:viewportWidth="100"
+            android:viewportHeight="100">
+
+            <path
+                android:name="topHorizontalLine"
+                android:pathData="M4,4 H96"
+                android:strokeWidth="4"
+                android:strokeColor="#68AF85"
+                android:strokeLineCap="round"/>
+            <path
+                android:name="bottomHorizontalLine"
+                android:pathData="M4,96 H96"
+                android:strokeWidth="4"
+                android:strokeLineCap="round"
+                android:strokeColor="#68AF85" />
+            <path
+                android:name="leftVerticalLine"
+                android:pathData="M4,4 V96"
+                android:strokeWidth="4"
+                android:strokeColor="#68AF85"
+                android:strokeLineCap="round"/>
+            <path
+                android:name="rightVerticalLine"
+                android:pathData="M96,4 V96"
+                android:strokeWidth="4"
+                android:strokeColor="#68AF85"
+                android:strokeLineCap="round"/>
+
+        </vector>
+    </aapt:attr>
+
+    <target android:name="topHorizontalLine">
+        <aapt:attr name="android:animation">
+            <set>
+                <objectAnimator
+                    android:duration="3000"
+                    android:interpolator="@android:interpolator/fast_out_slow_in"
+                    android:propertyName="pathData"
+                    android:valueFrom="M4,4 H0"
+                    android:valueTo="M4,4 H96"
+                    android:valueType="pathType" />
+            </set>
+        </aapt:attr>
+    </target>
+    <target android:name="bottomHorizontalLine">
+        <aapt:attr name="android:animation">
+            <set>
+                <objectAnimator
+                    android:duration="3000"
+                    android:interpolator="@android:interpolator/fast_out_slow_in"
+                    android:propertyName="pathData"
+                    android:startOffset="2700"
+                    android:valueFrom="M4,96 H0"
+                    android:valueTo="M4,96 H96"
+                    android:valueType="pathType" />
+            </set>
+        </aapt:attr>
+    </target>
+    <target android:name="leftVerticalLine">
+        <aapt:attr name="android:animation">
+            <set>
+                <objectAnimator
+                    android:duration="3000"
+                    android:interpolator="@android:interpolator/fast_out_slow_in"
+                    android:propertyName="pathData"
+                    android:valueFrom="M4,4 V0"
+                    android:valueTo="M4,4 V96"
+                    android:valueType="pathType" />
+            </set>
+        </aapt:attr>
+    </target>
+    <target android:name="rightVerticalLine">
+        <aapt:attr name="android:animation">
+            <set>
+                <objectAnimator
+                    android:duration="3000"
+                    android:interpolator="@android:interpolator/fast_out_slow_in"
+                    android:propertyName="pathData"
+                    android:startOffset="2700"
+                    android:valueFrom="M96,4 V0"
+                    android:valueTo="M96,4 V96"
+                    android:valueType="pathType" />
+            </set>
+        </aapt:attr>
+    </target>
+</animated-vector>

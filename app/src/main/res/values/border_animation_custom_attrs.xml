@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="AnimatedBorderView">
+        <attr name="borderStrokeWidth" format="dimension" />
+        <attr name="borderRadius" format="dimension" />
+        <attr name="borderColorDefault" format="color" />
+        <attr name="backgroundColorUnfocused" format="color" />
+        <attr name="borderColorError" format="color" />
+        <attr name="borderColorCorrect" format="color" />
+        <attr name="backgroundColorFocused" format="color" />
+        <attr name="backgroundAnimationDuration" format="integer" />
+        <attr name="borderAnimationDuration" format="integer" />
+    </declare-styleable>
+</resources>
