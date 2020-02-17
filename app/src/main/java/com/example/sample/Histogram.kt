@@ -2,6 +2,7 @@ package com.example.sample
 
 import android.content.Context
 import android.graphics.Color
+import android.graphics.RectF
 import android.util.AttributeSet
 import androidx.constraintlayout.widget.ConstraintLayout
 import kotlin.math.roundToInt
@@ -45,8 +46,21 @@ class Histogram : ConstraintLayout {
         addColumns()
     }
 
+    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+        super.onSizeChanged(w, h, oldw, oldh)
+
+        createColumns()
+    }
+
     private fun createColumns() {
+        columnList.clear()
+
+        var left = paddingStart.toFloat()
+        var right = paddingLeft + columnWidth.toFloat()
+        val bottom = height.toFloat() - paddingBottom
         dataSet.forEach {
+            val top = (height - paddingBottom - paddingTop) * (1 - (it.second.toFloat() / maxColumnValue.toFloat())) + maxColumnValueOffsetTop
+
             val column = Column(context).apply {
                 setColumnColor(
                     Color.argb(
@@ -56,10 +70,13 @@ class Histogram : ConstraintLayout {
                         (Math.random() * 255).roundToInt()
                     )
                 )
-                setColumnWidth(columnWidth)
             }
-            column.setColumnHeight((it.second.toDouble() / maxColumnValue.toDouble() * (height - maxColumnValueOffsetTop)).roundToInt())
+            right += columnWidth
+            left += columnWidth
+            column.setColumnRect(RectF(left, top, right, bottom))
             columnList.add(Pair(it.first, column))
+            right += columnSpacing
+            left += columnSpacing
         }
     }
 
