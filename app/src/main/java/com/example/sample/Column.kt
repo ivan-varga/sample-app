@@ -10,6 +10,7 @@ import android.util.AttributeSet
 import android.view.View
 
 private const val DEFAULT_CORNER_RADIUS = 10f
+private const val DEFAULT_HEIGHT_ANIMATOR_DURATION = 300L
 
 class Column : View {
 
@@ -24,15 +25,8 @@ class Column : View {
         style = Paint.Style.FILL_AND_STROKE
     }
 
-    private val heightAnimator = ValueAnimator.ofInt(0, 100).apply {
-        addUpdateListener {
-            with(columnRectF) {
-                currentColumnRectF = RectF(left, bottom - top * animatedFraction, right, bottom)
-                invalidate()
-            }
-        }
-        duration = 1000
-    }
+    private lateinit var heightAnimator: ValueAnimator
+    private var heightAnimatorDuration: Long = DEFAULT_HEIGHT_ANIMATOR_DURATION
 
     constructor(context: Context?) : super(context)
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
@@ -47,7 +41,26 @@ class Column : View {
 
     fun setColumnRect(rectF: RectF) {
         this.columnRectF = rectF
+
+        initAnimator()
+
         heightAnimator.start()
+    }
+
+    private fun initAnimator() {
+        if (::heightAnimator.isInitialized) {
+            heightAnimator.setFloatValues(currentColumnRectF.top, columnRectF.top)
+        } else {
+            heightAnimator = ValueAnimator.ofFloat(columnRectF.bottom, columnRectF.top).apply {
+                duration = heightAnimatorDuration
+                addUpdateListener {
+                    with(columnRectF) {
+                        currentColumnRectF = RectF(left, it.animatedValue as Float, right, bottom)
+                        invalidate()
+                    }
+                }
+            }
+        }
     }
 
     fun setColumnCornerRadius(radius: Float) {

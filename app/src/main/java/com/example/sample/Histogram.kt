@@ -5,7 +5,6 @@ import android.graphics.Color
 import android.graphics.RectF
 import android.util.AttributeSet
 import androidx.constraintlayout.widget.ConstraintLayout
-import kotlin.math.roundToInt
 
 private const val DEFAULT_COLUMN_WIDTH = 100
 private const val DEFAULT_MAX_COLUMN_VALUE_OFFSET_TOP = 20
@@ -42,8 +41,6 @@ class Histogram : ConstraintLayout {
         })?.second ?: 0
 
         createColumns()
-
-        addColumns()
     }
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
@@ -53,34 +50,42 @@ class Histogram : ConstraintLayout {
     }
 
     private fun createColumns() {
-        columnList.clear()
 
         var left = paddingStart.toFloat()
         var right = paddingLeft + columnWidth.toFloat()
         val bottom = height.toFloat() - paddingBottom
 
+        var index = 0
         dataSet.forEach {
             val top = (height - paddingBottom - paddingTop - maxColumnValueOffsetTop) * (it.second.toFloat() / maxColumnValue.toFloat())
 
-            val column = Column(context).apply {
-                setColumnColor(
-                    Color.argb(
-                        255,
-                        155,
-                        155,
-                        155
+            if (columnList.size > index) {
+                val column = columnList[index].second
+                column.setColumnRect(RectF(left, top, right, bottom))
+            } else {
+                val column = Column(context).apply {
+                    setColumnColor(
+                        Color.argb(
+                            255,
+                            155,
+                            15,
+                            155
+                        )
                     )
-                )
+                }
+                columnList.add(Pair(it.first, column))
+                addView(column)
+                column.setColumnRect(RectF(left, top, right, bottom))
             }
-            right += columnWidth
-            left += columnWidth
 
-            column.setColumnRect(RectF(left, top, right, bottom))
-            columnList.add(Pair(it.first, column))
+            right += columnWidth + columnSpacing
+            left += columnWidth + columnSpacing
 
-            right += columnSpacing
-            left += columnSpacing
+            index++
         }
+
+        columnList.filter { columnList.indexOf(it) > index }.forEach { removeViewAt(columnList.indexOf(it)) }
+        columnList.removeAll { columnList.indexOf(it) > index }
     }
 
     private fun addColumns() {

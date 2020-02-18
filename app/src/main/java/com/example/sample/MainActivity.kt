@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlin.math.roundToInt
 
 class MainActivity : AppCompatActivity() {
 
@@ -21,16 +22,9 @@ class MainActivity : AppCompatActivity() {
         recyclerViewPositionIndicator.attachToRecyclerView(recyclerView)
 
         setDataButton.setOnClickListener {
-            columnGraph.setData(
-                listOf(
-                    Pair("asd", 255 * Math.random() + 50),
-                    Pair("", 255 * Math.random()+ 50),
-                    Pair("asd", 255 * Math.random()+ 50),
-                    Pair("", 255 * Math.random()+ 50),
-                    Pair("asd", 255 * Math.random()+ 50),
-                    Pair("", 255 * Math.random()+ 50)
-                )
-            )
+            val list = arrayListOf<Pair<String, Double>>()
+            repeat((Math.random() * 10 + 2).roundToInt()) { list.add(Pair("asd", 255 * Math.random() + 50)) }
+            columnGraph.setData(list)
         }
     }
 }
