@@ -1,5 +1,6 @@
 package com.example.sample
 
+import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
@@ -15,11 +16,22 @@ class Column : View {
     private var columnCornerRadius = DEFAULT_CORNER_RADIUS
 
     private var columnRectF = RectF()
+    private var currentColumnRectF = RectF()
 
     private val columnPaint: Paint = Paint().apply {
         isAntiAlias = true
         color = Color.GREEN
         style = Paint.Style.FILL_AND_STROKE
+    }
+
+    private val heightAnimator = ValueAnimator.ofInt(0, 100).apply {
+        addUpdateListener {
+            with(columnRectF) {
+                currentColumnRectF = RectF(left, bottom - top * animatedFraction, right, bottom)
+                invalidate()
+            }
+        }
+        duration = 1000
     }
 
     constructor(context: Context?) : super(context)
@@ -30,11 +42,12 @@ class Column : View {
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
-        canvas.drawRoundRect(columnRectF, columnCornerRadius, columnCornerRadius, columnPaint)
+        canvas.drawRoundRect(currentColumnRectF, columnCornerRadius, columnCornerRadius, columnPaint)
     }
 
     fun setColumnRect(rectF: RectF) {
         this.columnRectF = rectF
+        heightAnimator.start()
     }
 
     fun setColumnCornerRadius(radius: Float) {

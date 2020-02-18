@@ -20,8 +20,17 @@ class MainActivity : AppCompatActivity() {
 
         recyclerViewPositionIndicator.attachToRecyclerView(recyclerView)
 
-        columnGraph.postDelayed({
-            columnGraph.setData(listOf(Pair("asd", 12), Pair("", 321), Pair("asd", 14), Pair("", 32), Pair("asd", 120), Pair("", 300)))
-        }, 2000)
+        setDataButton.setOnClickListener {
+            columnGraph.setData(
+                listOf(
+                    Pair("asd", 255 * Math.random() + 50),
+                    Pair("", 255 * Math.random()+ 50),
+                    Pair("asd", 255 * Math.random()+ 50),
+                    Pair("", 255 * Math.random()+ 50),
+                    Pair("asd", 255 * Math.random()+ 50),
+                    Pair("", 255 * Math.random()+ 50)
+                )
+            )
+        }
     }
 }

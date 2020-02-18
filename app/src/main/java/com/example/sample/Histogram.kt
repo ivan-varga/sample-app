@@ -58,29 +58,34 @@ class Histogram : ConstraintLayout {
         var left = paddingStart.toFloat()
         var right = paddingLeft + columnWidth.toFloat()
         val bottom = height.toFloat() - paddingBottom
+
         dataSet.forEach {
-            val top = (height - paddingBottom - paddingTop) * (1 - (it.second.toFloat() / maxColumnValue.toFloat())) + maxColumnValueOffsetTop
+            val top = (height - paddingBottom - paddingTop - maxColumnValueOffsetTop) * (it.second.toFloat() / maxColumnValue.toFloat())
 
             val column = Column(context).apply {
                 setColumnColor(
                     Color.argb(
-                        (Math.random() * 255).roundToInt(),
-                        (Math.random() * 255).roundToInt(),
-                        (Math.random() * 255).roundToInt(),
-                        (Math.random() * 255).roundToInt()
+                        255,
+                        155,
+                        155,
+                        155
                     )
                 )
             }
             right += columnWidth
             left += columnWidth
+
             column.setColumnRect(RectF(left, top, right, bottom))
             columnList.add(Pair(it.first, column))
+
             right += columnSpacing
             left += columnSpacing
         }
     }
 
     private fun addColumns() {
+        removeAllViews()
+
         columnList.forEach {
             addView(it.second)
         }
