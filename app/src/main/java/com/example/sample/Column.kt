@@ -5,19 +5,19 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
-import android.graphics.RectF
+import android.graphics.drawable.ColorDrawable
 import android.util.AttributeSet
 import android.view.View
 
-private const val DEFAULT_CORNER_RADIUS = 10f
+private const val DEFAULT_CORNER_RADIUS = 50f
 private const val DEFAULT_HEIGHT_ANIMATOR_DURATION = 300L
 
 class Column : View {
 
     private var columnCornerRadius = DEFAULT_CORNER_RADIUS
 
-    private var columnRectF = RectF()
-    private var currentColumnRectF = RectF()
+    private var top: Float = 0f
+    private var currentTop: Float = 0f
 
     private val columnPaint: Paint = Paint().apply {
         isAntiAlias = true
@@ -33,15 +33,18 @@ class Column : View {
     constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
     constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int, defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
 
+    init {
+        background = ColorDrawable(Color.RED)
+    }
+
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
-        canvas.drawRoundRect(currentColumnRectF, columnCornerRadius, columnCornerRadius, columnPaint)
+        canvas.drawRoundRect(0f, currentTop, width.toFloat(), bottom.toFloat(), columnCornerRadius, columnCornerRadius, columnPaint)
     }
 
-    fun setColumnRect(rectF: RectF) {
-        this.columnRectF = rectF
-
+    fun setColumnTop(top: Float) {
+        this.top = top
         initAnimator()
 
         heightAnimator.start()
@@ -49,15 +52,13 @@ class Column : View {
 
     private fun initAnimator() {
         if (::heightAnimator.isInitialized) {
-            heightAnimator.setFloatValues(currentColumnRectF.top, columnRectF.top)
+            heightAnimator.setFloatValues(currentTop, top)
         } else {
-            heightAnimator = ValueAnimator.ofFloat(columnRectF.bottom, columnRectF.top).apply {
+            heightAnimator = ValueAnimator.ofFloat(height.toFloat(), top).apply {
                 duration = heightAnimatorDuration
                 addUpdateListener {
-                    with(columnRectF) {
-                        currentColumnRectF = RectF(left, it.animatedValue as Float, right, bottom)
-                        invalidate()
-                    }
+                    currentTop = it.animatedValue as Float
+                    invalidate()
                 }
             }
         }

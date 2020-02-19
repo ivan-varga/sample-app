@@ -2,9 +2,9 @@ package com.example.sample
 
 import android.content.Context
 import android.graphics.Color
-import android.graphics.RectF
 import android.util.AttributeSet
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
 
 private const val DEFAULT_COLUMN_WIDTH = 100
 private const val DEFAULT_MAX_COLUMN_VALUE_OFFSET_TOP = 20
@@ -52,40 +52,67 @@ class Histogram : ConstraintLayout {
     }
 
     private fun createColumns() {
-
-        var left = paddingStart.toFloat()
-        var right = paddingLeft + columnWidth.toFloat()
-        val bottom = height.toFloat() - paddingBottom
-
         var index = 0
         dataSet.forEach {
             val top = getColumnTop(it.second)
 
-            if (columnList.size > index) {
-                val column = columnList[index].second
-                column.setColumnRect(RectF(left, top, right, bottom))
-            } else {
-                val column = Column(context).apply {
-                    setColumnColor(columnColor)
-                    setColumnRect(RectF(left, top, right, bottom))
-                }
+            val column = getColumn(index)
+            column.apply {
+                setColumnColor(columnColor)
+                id = column.hashCode()
+            }
+
+            column.setColumnTop(top)
+
+            if (columnList.size <= index) {
                 columnList.add(Pair(it.first, column))
                 addView(column)
             }
-
-            right += columnWidth + columnSpacing
-            left += columnWidth + columnSpacing
-
             index++
-        }
 
+        }
         removeUnusedColumns(index)
+        applyConstraints()
     }
 
+    private fun applyConstraints() {
+        val set = ConstraintSet()
+        set.clone(this)
+
+        var previousColumn = columnList.firstOrNull()?.second
+        for (i in 1 until columnList.size) {
+            val currentColumn = columnList[i].second
+            previousColumn?.let {
+
+                set.connect(currentColumn.id, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM, 0)
+
+                if (i == 1) {
+                    set.connect(currentColumn.id, ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START, columnSpacing)
+                } else {
+                    set.connect(currentColumn.id, ConstraintSet.START, it.id, ConstraintSet.END, columnSpacing)
+                }
+            }
+            previousColumn = currentColumn
+        }
+
+        set.applyTo(this)
+    }
+
+    /**
+     * If there is already an existing column, reuse it.
+     * Else create a new column
+     */
+    private fun getColumn(index: Int): Column =
+        if (columnList.size > index) columnList[index].second
+        else Column(context).apply { layoutParams = LayoutParams(columnWidth, height) }
+
+    /**
+     * If the new data set contains a smaller number of columns than the current number of columns, remove unused columns.
+     */
     private fun removeUnusedColumns(index: Int) {
         var numberOfViewsRemoved = 0
         columnList.filter { columnList.indexOf(it) > index }.forEach {
-            removeViewAt(columnList.indexOf(it) - numberOfViewsRemoved)
+            removeView(it.second)
             numberOfViewsRemoved++
         }
         columnList.removeAll { columnList.indexOf(it) > index }
