@@ -28,15 +28,15 @@
 
     <HorizontalScrollView
         android:layout_width="match_parent"
-        android:layout_height="400dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/sortDataButton"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/recyclerViewPositionIndicator">
 
         <com.example.sample.Histogram
             android:id="@+id/columnGraph"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:background="@color/colorAccent" />
+            android:layout_height="match_parent" />
     </HorizontalScrollView>
 
     <Button
@@ -45,5 +45,13 @@
         android:layout_height="wrap_content"
         android:text="Set data"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/sortDataButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Sort"
+        app:layout_constraintBottom_toTopOf="@id/setDataButton"
         app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

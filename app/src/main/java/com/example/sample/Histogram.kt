@@ -45,10 +45,9 @@ class Histogram : ConstraintLayout {
         createColumns()
     }
 
-    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
-        super.onSizeChanged(w, h, oldw, oldh)
-
-        createColumns()
+    fun sortColumns(descending: Boolean = true) {
+        if (descending) columnList.sortBy { it.second.top } else columnList.sortByDescending { it.second.top }
+        applyConstraints()
     }
 
     private fun createColumns() {
@@ -79,19 +78,14 @@ class Histogram : ConstraintLayout {
         val set = ConstraintSet()
         set.clone(this)
 
-        var previousColumn = columnList.firstOrNull()?.second
+        var previousColumn = columnList.firstOrNull()?.second ?: return
+        set.connect(previousColumn.id, ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START, 0)
+        set.connect(previousColumn.id, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM, 0)
+
         for (i in 1 until columnList.size) {
             val currentColumn = columnList[i].second
-            previousColumn?.let {
-
-                set.connect(currentColumn.id, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM, 0)
-
-                if (i == 1) {
-                    set.connect(currentColumn.id, ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START, columnSpacing)
-                } else {
-                    set.connect(currentColumn.id, ConstraintSet.START, it.id, ConstraintSet.END, columnSpacing)
-                }
-            }
+            set.connect(currentColumn.id, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM, 0)
+            set.connect(currentColumn.id, ConstraintSet.START, previousColumn.id, ConstraintSet.END, columnSpacing)
             previousColumn = currentColumn
         }
 
