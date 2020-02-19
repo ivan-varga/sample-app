@@ -2,6 +2,7 @@ package com.example.sample
 
 import android.content.Context
 import android.graphics.Color
+import android.transition.TransitionManager
 import android.util.AttributeSet
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
@@ -22,7 +23,7 @@ class Histogram : ConstraintLayout {
     private var maxColumnValue: Number = 0
     private var maxColumnValueOffsetTop = DEFAULT_MAX_COLUMN_VALUE_OFFSET_TOP
 
-    private var columnColor: Int = Color.GREEN
+    private var columnColor: Int = Color.rgb(50, 168, 82)
 
     constructor(context: Context?) : super(context)
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
@@ -43,6 +44,8 @@ class Histogram : ConstraintLayout {
         })?.second ?: 0
 
         createColumns()
+
+        applyConstraints()
     }
 
     fun sortColumns(descending: Boolean = true) {
@@ -71,7 +74,6 @@ class Histogram : ConstraintLayout {
 
         }
         removeUnusedColumns(index)
-        applyConstraints()
     }
 
     private fun applyConstraints() {
@@ -89,7 +91,12 @@ class Histogram : ConstraintLayout {
             previousColumn = currentColumn
         }
 
-        set.applyTo(this)
+        animateColumnReordering(set)
+    }
+
+    private fun animateColumnReordering(endConstraintSet: ConstraintSet) {
+        TransitionManager.beginDelayedTransition(this)
+        endConstraintSet.applyTo(this)
     }
 
     /**
