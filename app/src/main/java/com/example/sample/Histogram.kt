@@ -22,6 +22,8 @@ class Histogram : ConstraintLayout {
     private var maxColumnValue: Number = 0
     private var maxColumnValueOffsetTop = DEFAULT_MAX_COLUMN_VALUE_OFFSET_TOP
 
+    private var columnColor: Int = Color.GREEN
+
     constructor(context: Context?) : super(context)
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
     constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
@@ -57,25 +59,18 @@ class Histogram : ConstraintLayout {
 
         var index = 0
         dataSet.forEach {
-            val top = (height - paddingBottom - paddingTop - maxColumnValueOffsetTop) * (it.second.toFloat() / maxColumnValue.toFloat())
+            val top = getColumnTop(it.second)
 
             if (columnList.size > index) {
                 val column = columnList[index].second
                 column.setColumnRect(RectF(left, top, right, bottom))
             } else {
                 val column = Column(context).apply {
-                    setColumnColor(
-                        Color.argb(
-                            255,
-                            155,
-                            15,
-                            155
-                        )
-                    )
+                    setColumnColor(columnColor)
+                    setColumnRect(RectF(left, top, right, bottom))
                 }
                 columnList.add(Pair(it.first, column))
                 addView(column)
-                column.setColumnRect(RectF(left, top, right, bottom))
             }
 
             right += columnWidth + columnSpacing
@@ -84,15 +79,18 @@ class Histogram : ConstraintLayout {
             index++
         }
 
-        columnList.filter { columnList.indexOf(it) > index }.forEach { removeViewAt(columnList.indexOf(it)) }
+        removeUnusedColumns(index)
+    }
+
+    private fun removeUnusedColumns(index: Int) {
+        var numberOfViewsRemoved = 0
+        columnList.filter { columnList.indexOf(it) > index }.forEach {
+            removeViewAt(columnList.indexOf(it) - numberOfViewsRemoved)
+            numberOfViewsRemoved++
+        }
         columnList.removeAll { columnList.indexOf(it) > index }
     }
 
-    private fun addColumns() {
-        removeAllViews()
-
-        columnList.forEach {
-            addView(it.second)
-        }
-    }
+    private fun getColumnTop(value: Number) =
+        (height - paddingBottom - paddingTop).toFloat() * (1f - value.toFloat() / maxColumnValue.toFloat()) + maxColumnValueOffsetTop
 }
