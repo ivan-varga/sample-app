@@ -79,19 +79,15 @@ class Histogram : ConstraintLayout {
         val set = ConstraintSet()
         set.clone(this)
 
-        var previousColumn = columnList.firstOrNull()?.second
+        var previousColumn: Column = columnList.firstOrNull()?.second ?: return
+        set.connect(previousColumn.id, ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START, columnSpacing)
+
         for (i in 1 until columnList.size) {
             val currentColumn = columnList[i].second
-            previousColumn?.let {
 
-                set.connect(currentColumn.id, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM, 0)
+            set.connect(currentColumn.id, ConstraintSet.BOTTOM, ConstraintSet.PARENT_ID, ConstraintSet.BOTTOM, 0)
+            set.connect(currentColumn.id, ConstraintSet.START, previousColumn.id, ConstraintSet.END, columnSpacing)
 
-                if (i == 1) {
-                    set.connect(currentColumn.id, ConstraintSet.START, ConstraintSet.PARENT_ID, ConstraintSet.START, columnSpacing)
-                } else {
-                    set.connect(currentColumn.id, ConstraintSet.START, it.id, ConstraintSet.END, columnSpacing)
-                }
-            }
             previousColumn = currentColumn
         }
 

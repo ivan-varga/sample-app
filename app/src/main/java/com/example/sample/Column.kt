@@ -9,7 +9,7 @@ import android.graphics.drawable.ColorDrawable
 import android.util.AttributeSet
 import android.view.View
 
-private const val DEFAULT_CORNER_RADIUS = 50f
+private const val DEFAULT_CORNER_RADIUS = 10f
 private const val DEFAULT_HEIGHT_ANIMATOR_DURATION = 300L
 
 class Column : View {
