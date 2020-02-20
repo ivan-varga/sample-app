@@ -5,7 +5,6 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
-import android.graphics.drawable.ColorDrawable
 import android.util.AttributeSet
 import android.view.View
 
@@ -16,7 +15,9 @@ class Column : View {
 
     private var columnCornerRadius = DEFAULT_CORNER_RADIUS
 
-    private var top: Float = 0f
+    var top: Float = 0f
+        private set
+
     private var currentTop: Float = 0f
 
     private val columnPaint: Paint = Paint().apply {
@@ -32,10 +33,6 @@ class Column : View {
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
     constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
     constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int, defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
-
-    init {
-        background = ColorDrawable(Color.RED)
-    }
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)

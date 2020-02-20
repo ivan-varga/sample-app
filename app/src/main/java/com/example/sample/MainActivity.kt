@@ -23,8 +23,12 @@ class MainActivity : AppCompatActivity() {
 
         setDataButton.setOnClickListener {
             val list = arrayListOf<Pair<String, Double>>()
-            repeat((Math.random() * 3 + 9).roundToInt()) { list.add(Pair("asd", 255 * Math.random())) }
+            repeat(5 + (Math.random() * 5).roundToInt()) { list.add(Pair("asd", 255 * Math.random())) }
             columnGraph.setData(list)
+        }
+
+        sortDataButton.setOnClickListener {
+            columnGraph.sortColumns(false)
         }
     }
 }
