@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
 
         setDataButton.setOnClickListener {
             val list = arrayListOf<Pair<String, Double>>()
-            repeat(5 + (Math.random() * 5).roundToInt()) { list.add(Pair("asd", 255 * Math.random())) }
+            repeat(15 + (Math.random() * 5).roundToInt()) { list.add(Pair("asd", 255 * Math.random())) }
             columnGraph.setData(list)
         }
 
