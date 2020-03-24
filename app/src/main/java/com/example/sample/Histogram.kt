@@ -117,7 +117,9 @@ class Histogram : ConstraintLayout {
     }
 
     private fun getColumnTop(value: Number): Float =
-        getAvailableHeight().toFloat() * (1f - value.toFloat() / maxColumnValue.toFloat()) + maxColumnValueOffsetTop
+        getAvailableHeight().toFloat() * (1f - getValueRatio(value)) + maxColumnValueOffsetTop
 
     private fun getAvailableHeight(): Int = height - paddingBottom - paddingTop
+
+    private fun getValueRatio(value: Number) = value.toFloat() / maxColumnValue.toFloat()
 }
