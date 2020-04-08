@@ -26,8 +26,15 @@ class Column : View {
         style = Paint.Style.FILL_AND_STROKE
     }
 
-    private lateinit var heightAnimator: ValueAnimator
     private var heightAnimatorDuration: Long = DEFAULT_HEIGHT_ANIMATOR_DURATION
+
+    private val heightAnimator: ValueAnimator = ValueAnimator.ofFloat(0f, 0f).apply {
+        duration = heightAnimatorDuration
+        addUpdateListener {
+            currentTop = it.animatedValue as Float
+            invalidate()
+        }
+    }
 
     constructor(context: Context?) : super(context)
     constructor(context: Context?, attrs: AttributeSet?) : super(context, attrs)
@@ -42,23 +49,10 @@ class Column : View {
 
     fun setColumnTop(top: Float) {
         this.top = top
-        initAnimator()
+
+        heightAnimator.setFloatValues(currentTop, top)
 
         heightAnimator.start()
-    }
-
-    private fun initAnimator() {
-        if (::heightAnimator.isInitialized) {
-            heightAnimator.setFloatValues(currentTop, top)
-        } else {
-            heightAnimator = ValueAnimator.ofFloat(height.toFloat(), top).apply {
-                duration = heightAnimatorDuration
-                addUpdateListener {
-                    currentTop = it.animatedValue as Float
-                    invalidate()
-                }
-            }
-        }
     }
 
     fun setColumnCornerRadius(radius: Float) {

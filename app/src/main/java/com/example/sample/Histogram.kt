@@ -47,31 +47,28 @@ class Histogram : ConstraintLayout {
     }
 
     /**
-     * We subtract the top from [getAvailableHeight] because small values have a large value for top (they need to be shorter).
+     * Top property grows larger as we move down the screen. This results in columns with lower values having larger top values.
+     * This is why we use sortByDescending to sort ascending and sortBy to sort descending.
      */
     fun sortColumns(descending: Boolean = false) {
-        if (descending) columnList.sortByDescending { getAvailableHeight() - it.second.top } else columnList.sortBy { getAvailableHeight() - it.second.top }
+        if (descending) columnList.sortBy { it.second.top } else columnList.sortByDescending { it.second.top }
         applyConstraints()
     }
 
     private fun createColumns(dataSet: List<Pair<String, Number>>) {
-        var index = 0
-        dataSet.forEach {
-            val top = getColumnTop(it.second)
+        dataSet.forEachIndexed { index, pair ->
+            val top = getColumnTop(pair.second)
 
             val column = getColumn(index).apply {
-                setColumnColor(columnColor)
-                id = View.generateViewId()
                 setColumnTop(top)
             }
 
             if (columnList.size <= index) {
-                columnList.add(Pair(it.first, column))
+                columnList.add(Pair(pair.first, column))
                 addView(column)
             }
-            index++
         }
-        removeUnusedColumns(index)
+        removeUnusedColumns(dataSet.size)
     }
 
     private fun applyConstraints() {
@@ -108,7 +105,13 @@ class Histogram : ConstraintLayout {
      */
     private fun getColumn(index: Int): Column =
         if (columnList.size > index) columnList[index].second
-        else Column(context).apply { layoutParams = LayoutParams(columnWidth, height) }
+        else instantiateColumn()
+
+    private fun instantiateColumn() = Column(context).apply {
+        setColumnColor(columnColor)
+        id = View.generateViewId()
+        layoutParams = LayoutParams(columnWidth, height)
+    }
 
     /**
      * If the new data set contains a smaller number of columns than the current number of columns, remove unused columns.
